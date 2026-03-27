@@ -102,3 +102,9 @@ export const getCurrentUser = async (req, res) => {
     user: req.user,
   });
 };
+
+export const employerOnlyRoute = async (req, res) => {
+  return res.status(200).json({
+    message: "Employer, you have access",
+  });
+};
