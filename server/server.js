@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
@@ -11,6 +12,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("API działa 🚀");
 });
+
+//routes
+app.use("/api/auth", authRoutes);
 
 const PORT = 5000;
 
