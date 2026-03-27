@@ -1,22 +1,25 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import connectDB from "./config/db.js";
+
+dotenv.config();
+
+connectDB();
 
 const app = express();
 
-// middleware
 app.use(cors());
 app.use(express.json());
 
-// test route
 app.get("/", (req, res) => {
-  res.send("API działa 🚀");
+  res.send("API działa :)");
 });
 
-//routes
 app.use("/api/auth", authRoutes);
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server działa na porcie ${PORT}`);
