@@ -1,0 +1,23 @@
+# node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# build
+dist/
+build/
+
+# env
+.env
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# system files
+.DS_Store
+Thumbs.db
+
+# vite
+client/dist/
