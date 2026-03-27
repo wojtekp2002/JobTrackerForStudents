@@ -95,3 +95,10 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+
+export const getCurrentUser = async (req, res) => {
+  return res.status(200).json({
+    message: "Current user fetched successfully",
+    user: req.user,
+  });
+};
