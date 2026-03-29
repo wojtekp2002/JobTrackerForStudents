@@ -112,3 +112,48 @@ export const getApplicationsForJob = async (req, res) => {
     });
   }
 };
+
+export const updateApplicationStatus = async (req, res) => {
+  try {
+    if (req.user.role !== "employer") {
+        return res.status(403).json({
+            message: "Only employers can update application status",
+        });
+    }
+
+    const { applicationId } = req.params;
+    const { status } = req.body;
+
+    if (!["interview", "accepted", "rejected"].includes(status)) {
+        return res.status(400).json({
+            message: "Invalid status value",
+        });
+    }
+
+    const application = await Application.findById(applicationId).populate("job");
+    if (!application) {
+        return res.status(404).json({
+            message: "Application not found",
+        });
+    }
+    
+    if (application.job.employer.toString() !== req.user._id.toString()) {
+        return res.status(403).json({
+            message: "You are not authorized",
+        });
+    }
+
+    application.status = status;
+    await application.save();
+
+    return res.status(200).json({
+        message: "Application status updated successfully",
+        application,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
