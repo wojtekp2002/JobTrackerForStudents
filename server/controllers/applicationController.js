@@ -55,15 +55,56 @@ export const getMyApplications = async (req, res) => {
         });
     };
 
-    const applications = await Application.find({student: req.user._id}).populate("job");
-
-    const sortedApplications = applications.sort((a, b) => b.createdAt - a.createdAt);
+    const applications = await Application.find({student: req.user._id})
+        .populate("job")
+        .sort({createdAt: -1});
 
     return res.status(200).json({
         message: "Applications retrieved successfully",
         count: applications.length,
-        applications: sortedApplications,
+        applications: applications,
     })
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+export const getApplicationsForJob = async (req, res) => {
+  try {
+    
+    if (req.user.role !== "employer") {
+        return res.status(403).json({
+            message: "Only employers can view applications for their jobs",
+        });
+    }
+    
+    const { jobId } = req.params;
+    const job = await Job.findById(jobId);
+    
+    if (!job) {
+        return res.status(404).json({
+            message: "Job not found",
+        });
+    }
+    
+    if (job.employer.toString() !== req.user._id.toString()) {
+        return res.status(403).json({
+            message: "You are not authorized",
+        });
+    }
+    
+    const applications = await Application.find({job: jobId})
+        .populate("student", "name email role")
+        .sort({createdAt: -1});
+    
+    return res.status(200).json({
+        message: "Applications retrieved successfully",
+        count: applications.length,
+        applications: applications,
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Server error",
