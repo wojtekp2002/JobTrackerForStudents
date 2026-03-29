@@ -46,3 +46,28 @@ export const applyToJob = async (req, res) => {
     });
   }
 };
+
+export const getMyApplications = async (req, res) => {
+  try {
+    if (req.user.role !== "student") {
+        return res.status(403).json({
+            message: "Only students can view their applications",
+        });
+    };
+
+    const applications = await Application.find({student: req.user._id}).populate("job");
+
+    const sortedApplications = applications.sort((a, b) => b.createdAt - a.createdAt);
+
+    return res.status(200).json({
+        message: "Applications retrieved successfully",
+        count: applications.length,
+        applications: sortedApplications,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
