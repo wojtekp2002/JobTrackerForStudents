@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import JobList from "./components/JobList";
+import JobDetails from "./components/Jobdetails";
 
 function App() {
   
@@ -18,20 +20,9 @@ function App() {
   const [selectedJob, setSelectedJob] = useState(null);
   
   if (selectedJob) {
-  return (
-    <div>
-      <h1>Student Jobs App</h1>
-      <button onClick={() => setSelectedJob(null)}>Back</button>
-
-      <h2>{selectedJob.title}</h2>
-      <p>{selectedJob.companyName}</p>
-      <p>{selectedJob.description}</p>
-      <p>{selectedJob.location}</p>
-      <p>{selectedJob.workMode}</p>
-      <p>{selectedJob.employmentType}</p>
-      <p>{selectedJob.salary}</p>
-    </div>
-  );
+    return (
+      <JobDetails job={selectedJob} onBack={() => setSelectedJob(null)} />
+    );
   }
 
   return (
@@ -39,16 +30,7 @@ function App() {
       <h1>Student Jobs App</h1>
       <div>
         <h2>Job Offers</h2>
-        <ul>
-          {jobs.map(job => (
-            <li key={job._id} onClick={() => setSelectedJob(job)}>
-              <h3>{job.title}</h3>
-              <p>{job.companyName}</p>
-              <p>{job.description}</p>
-              <p>{job.location}</p>
-            </li>
-          ))}
-        </ul>
+        <JobList jobs={jobs} onSelectJob={setSelectedJob} />
       </div>
 
     </div>
