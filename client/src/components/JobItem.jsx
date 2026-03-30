@@ -5,8 +5,8 @@ function JobItem({ job, onSelectJob }) {
     <li onClick={() => onSelectJob(job)}>
         <h3>{job.title}</h3>
         <p>{job.companyName}</p>
-        <p>{job.description}</p>
         <p>{job.location}</p>
+        <p>{job.description}</p>
     </li>
   );
 }
