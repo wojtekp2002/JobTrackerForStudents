@@ -52,7 +52,13 @@ function App() {
         />
         <button onClick={() => setFilterValue(inputValue)}>Search</button>
 
-        <JobList jobs={filteredJobs} onSelectJob={setSelectedJob} />
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : filteredJobs.length === 0 ? (
+          <p>No job offers found.</p>
+        ) : (
+          <JobList jobs={filteredJobs} onSelectJob={setSelectedJob} />
+        )}
       </div>
 
     </div>
