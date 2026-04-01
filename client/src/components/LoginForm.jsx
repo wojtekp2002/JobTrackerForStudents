@@ -1,5 +1,10 @@
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function LoginForm() {
+function LoginForm({ onLoginSuccess }) {
+    const navigate = useNavigate();
+
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -22,8 +27,12 @@ function LoginForm() {
         email: inputEmail,
         password: inputPassword
         }).then(response => {
-            console.log("Login successful:", response.data);
-            // Handle successful login (e.g., store token, redirect)
+            console.log("Login successful:");
+            localStorage.setItem("token", response.data.token);
+            setErrorMessage("");
+            onLoginSuccess();
+            navigate("/", { replace: true });
+
         }).catch(error => {
             console.error("Login error:", error);
             setErrorMessage("Invalid email or password."); 
@@ -32,8 +41,6 @@ function LoginForm() {
 
     return (
         <div>
-            <h1>Student Jobs App</h1>
-            <h2>Login</h2>
             {errorMessage && <p>{errorMessage}</p>}
             <form onSubmit={handleSubmit} >
                 <input type="text" placeholder="Email" value={inputEmail} onChange={(e) => setInputEmail(e.target.value)} />

@@ -1,67 +1,28 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import JobList from "./components/JobList";
-import JobDetails from "./components/Jobdetails";
+import {Route, Routes} from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
-  
-  const [jobs, setJobs] = useState([]);
-  const [selectedJob, setSelectedJob] = useState(null);
-  const [inputValue, setInputValue] = useState("");
-  const [filterValue, setFilterValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
-    setIsLoading(true);
-    axios.get("http://localhost:5000/api/jobs")
-      .then(response => {
-        setJobs(response.data.jobs);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        setIsLoading(false);
-        console.error("Error fetching job offers:", error);
-      });
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
   }, []);
 
-  const term = filterValue.toLowerCase().trim();
-  const filteredJobs = jobs.filter(job =>
-    job.title.toLowerCase().includes(term) ||
-    job.companyName.toLowerCase().includes(term) ||
-    job.description.toLowerCase().includes(term) ||
-    job.location.toLowerCase().includes(term)
-  );
-
-  if (selectedJob) {
-    return (
-      <JobDetails job={selectedJob} onBack={() => setSelectedJob(null)} />
-    );
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  };
 
   return (
-    <div>
-      <h1>Student Jobs App</h1>
-      <div>
-        <h2>Job Offers</h2>
-        <input
-          type="text"
-          placeholder="Search jobs..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && setFilterValue(inputValue)}
-        />
-        <button onClick={() => setFilterValue(inputValue)}>Search</button>
-
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : filteredJobs.length === 0 ? (
-          <p>No job offers found.</p>
-        ) : (
-          <JobList jobs={filteredJobs} onSelectJob={setSelectedJob} />
-        )}
-      </div>
-
-    </div>
+      <Routes>
+        <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
+        <Route path="/login" element={<LoginPage onLoginSuccess={() => setIsLoggedIn(true)} />} />
+      </Routes>
   );
 }
 
