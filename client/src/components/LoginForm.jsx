@@ -25,8 +25,8 @@ function LoginForm({ onLoginSuccess }) {
         setErrorMessage("");
         
         axios.post("http://localhost:5000/api/auth/login", {
-        email: inputEmail,
-        password: inputPassword
+            email: inputEmail,
+            password: inputPassword
         }).then(response => {
             console.log("Login successful:");
             localStorage.setItem("token", response.data.token);

@@ -7,6 +7,7 @@ function LoginPage({ onLoginSuccess }) {
       <h1>Student Jobs App</h1>
       <h2>Login</h2>
       <LoginForm onLoginSuccess={onLoginSuccess} />
+      <Link to="/register">Don't have an account? Register</Link>
       <Link to="/">Back</Link>
     </div>
   );

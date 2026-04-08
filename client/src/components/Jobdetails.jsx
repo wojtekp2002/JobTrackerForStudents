@@ -18,7 +18,7 @@ function JobDetails({ job, onBack, isLoggedIn }) {
             {isLoggedIn ? (
                 <button>Apply Now</button>
             ) : (
-                <Link to="/login" state={{from: "/jobs/" + job.id}}>Login to apply</Link>
+                <Link to="/login" state={{from: "/"}}>Login to apply</Link>
             )}
         </div>
     );
