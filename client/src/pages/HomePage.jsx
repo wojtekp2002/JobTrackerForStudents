@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import JobList from "../components/JobList";
-import JobDetails from "../components/Jobdetails";
 
 function HomePage({ isLoggedIn, onLogout }) {
     const [jobs, setJobs] = useState([]);
-    const [selectedJob, setSelectedJob] = useState(null);
     const [inputValue, setInputValue] = useState("");
     const [filterValue, setFilterValue] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -33,12 +31,6 @@ function HomePage({ isLoggedIn, onLogout }) {
         job.location.toLowerCase().includes(term)
     );
 
-    if (selectedJob) {
-        return (
-            <JobDetails job={selectedJob} onBack={() => setSelectedJob(null)} isLoggedIn={isLoggedIn} />
-        );
-    }
-
     return (
         <div>
             <h1>Student Jobs App</h1>
@@ -58,7 +50,7 @@ function HomePage({ isLoggedIn, onLogout }) {
             ) : filteredJobs.length === 0 ? (
             <p>No job offers found.</p>
             ) : (
-            <JobList jobs={filteredJobs} onSelectJob={setSelectedJob} />
+            <JobList jobs={filteredJobs} />
             )}
         </div>
     );

@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-function JobItem({ job, onSelectJob }) {
+function JobItem({ job }) {
   return (
-    <li onClick={() => onSelectJob(job)}>
-        <h3>{job.title}</h3>
+    <li>
+        <Link to={`/jobs/${job._id}`}>{job.title}</Link>
         <p>{job.companyName}</p>
         <p>{job.location}</p>
         <p>{job.description}</p>
@@ -13,7 +14,6 @@ function JobItem({ job, onSelectJob }) {
 
 JobItem.propTypes = {
   job: PropTypes.object.isRequired,
-  onSelectJob: PropTypes.func.isRequired
 };
 
 export default JobItem;
