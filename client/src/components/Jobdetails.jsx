@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-function JobDetails({ job, onBack }) {
+function JobDetails({ job, onBack, isLoggedIn }) {
     return (
         <div>
             <h1>Student Jobs App</h1>
@@ -13,13 +14,20 @@ function JobDetails({ job, onBack }) {
             <p>{job.workMode}</p>
             <p>{job.employmentType}</p>
             <p>{job.salary}</p>
+
+            {isLoggedIn ? (
+                <button>Apply Now</button>
+            ) : (
+                <Link to="/login" state={{from: "/jobs/" + job.id}}>Login to apply</Link>
+            )}
         </div>
     );
 };
 
 JobDetails.propTypes = {
   job: PropTypes.object.isRequired,
-  onBack: PropTypes.func.isRequired
+  onBack: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 export default JobDetails;

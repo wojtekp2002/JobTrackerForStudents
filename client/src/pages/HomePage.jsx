@@ -35,7 +35,7 @@ function HomePage({ isLoggedIn, onLogout }) {
 
     if (selectedJob) {
         return (
-            <JobDetails job={selectedJob} onBack={() => setSelectedJob(null)} />
+            <JobDetails job={selectedJob} onBack={() => setSelectedJob(null)} isLoggedIn={isLoggedIn} />
         );
     }
 

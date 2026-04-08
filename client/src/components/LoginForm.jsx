@@ -1,9 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function LoginForm({ onLoginSuccess }) {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
@@ -31,7 +32,7 @@ function LoginForm({ onLoginSuccess }) {
             localStorage.setItem("token", response.data.token);
             setErrorMessage("");
             onLoginSuccess();
-            navigate("/", { replace: true });
+            navigate(location.state?.from || "/", { replace: true });
 
         }).catch(error => {
             console.error("Login error:", error);
