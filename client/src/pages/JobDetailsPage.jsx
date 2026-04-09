@@ -45,12 +45,12 @@ function JobDetailsPage({ isLoggedIn }) {
             <p>{job.salary}</p>
 
             {isLoggedIn ? (
-                <button>Apply Now</button>
+                <Link to={`/jobs/${id}/apply`} state={{ from: `/jobs/${id}` }}>Apply</Link>
             ) : (
                 <Link to="/login" state={{ from: `/jobs/${id}` }}>Login to apply</Link>
             )}
 
-            <Link to="/">Back to Jobs</Link>
+            <Link to="/">Back</Link>
         </div>
     );
 };
