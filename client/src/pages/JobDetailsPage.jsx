@@ -2,8 +2,10 @@ import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import Navbar from "../components/Navbar";
+import { ArrowLeft } from "lucide-react";
 
-function JobDetailsPage({ isLoggedIn }) {
+function JobDetailsPage({ isLoggedIn, onLogout }) {
     const { id } = useParams();
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -60,22 +62,7 @@ function JobDetailsPage({ isLoggedIn }) {
 
     return (
         <div>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "12px 24px",
-                    borderBottom: "1px solid #334155",
-                }}
-            >
-                <h2 style={{ margin: 0 }}>StudentyWantWork</h2>
-
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    {isLoggedIn && <Link to="/my-applications">My Applications</Link>}
-                    <Link to="/">Back to jobs</Link>
-                </div>
-            </div>
+            <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout}/>
 
             <div
                 style={{
@@ -84,6 +71,18 @@ function JobDetailsPage({ isLoggedIn }) {
                     padding: "32px 16px",
                 }}
             >
+                <Link
+                    to="/"
+                    style={{
+                        display: "inline-block",
+                        marginBottom: "16px",
+                        color: "#c4b5fd",
+                        textDecoration: "none",
+                    }}
+                >
+                    Back
+                </Link>
+
                 <div
                     style={{
                         background: "rgba(30, 41, 59, 0.9)",
@@ -257,7 +256,8 @@ function JobDetailsPage({ isLoggedIn }) {
 };
 
 JobDetailsPage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  onLogout: PropTypes.func,
 };
 
 export default JobDetailsPage;

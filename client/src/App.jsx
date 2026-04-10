@@ -27,7 +27,7 @@ function App() {
         <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
         <Route path="/login" element={<LoginPage onLoginSuccess={() => setIsLoggedIn(true)} />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/jobs/:id" element={<JobDetailsPage isLoggedIn={isLoggedIn}/>} />
+        <Route path="/jobs/:id" element={<JobDetailsPage isLoggedIn={isLoggedIn} onLogout={handleLogout}/>} />
         <Route path="/jobs/:id/apply" element={<ApplyPage isLoggedIn={isLoggedIn}/>} />
         <Route path="/my-applications" element={<MyApplicationsPage />} />
       </Routes>

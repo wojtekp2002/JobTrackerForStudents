@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import JobList from "../components/JobList";
+import Navbar from "../components/Navbar";
 
 function HomePage({ isLoggedIn, onLogout }) {
     const [jobs, setJobs] = useState([]);
@@ -33,28 +34,7 @@ function HomePage({ isLoggedIn, onLogout }) {
 
     return (
         <div>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "12px 24px",
-                    borderBottom: "1px solid #ccc",
-                }}
-            >
-                <h2 style={{ margin: 0 }}>StudentyWantWork</h2>
-
-                <div style={{ display: "flex", alignItems: "center", gap: "12px"}}>
-                    {!isLoggedIn ? (
-                        <Link to="/login" style={{borderRadius: "25%"}}>Login</Link>
-                    ) : (
-                        <>
-                            <Link to="/my-applications" >My Applications</Link>
-                            <button onClick={onLogout} style={{cursor: "pointer"}}>Logout</button>
-                        </>
-                    )}
-                </div>
-            </div>
+            <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} />
 
             <div
                 style={{
