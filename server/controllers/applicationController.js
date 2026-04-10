@@ -50,7 +50,7 @@ export const applyToJob = async (req, res) => {
       phone,
       currLocation,
       coverLetter,
-      cvFilePath: req.file.path,
+      cvFilePath: req.file.path.replace(/\\/g, "/"),
       student: req.user._id,
       job: jobId,
     });
@@ -169,6 +169,26 @@ export const updateApplicationStatus = async (req, res) => {
     return res.status(200).json({
         message: "Application status updated successfully",
         application,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+export const checkIfApplied = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    const existingApplication = await Application.findOne({
+      student: req.user._id,
+      job: jobId,
+    });
+
+    return res.status(200).json({
+      applied: !!existingApplication,
     });
   } catch (error) {
     return res.status(500).json({

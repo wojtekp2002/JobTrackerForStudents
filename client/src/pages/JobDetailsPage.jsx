@@ -7,6 +7,7 @@ function JobDetailsPage({ isLoggedIn }) {
     const { id } = useParams();
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isApplied, setIsApplied] = useState(false);
 
     useEffect(() => {
         const fetchJobDetails = async () => {
@@ -23,6 +24,31 @@ function JobDetailsPage({ isLoggedIn }) {
 
         fetchJobDetails();
     }, [id]);
+
+    useEffect(() => {
+        const checkApplication = async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                const response = await axios.get(
+                    `http://localhost:5000/api/applications/check/${id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                setIsApplied(response.data.applied);
+            } catch (error) {
+                console.error("Error checking application:", error);
+            }
+        };
+
+        if (isLoggedIn) {
+            checkApplication();
+        }
+    }, [id, isLoggedIn]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -45,9 +71,17 @@ function JobDetailsPage({ isLoggedIn }) {
             <p>{job.salary}</p>
 
             {isLoggedIn ? (
-                <Link to={`/jobs/${id}/apply`} state={{ from: `/jobs/${id}` }}>Apply</Link>
+                isApplied ? (
+                    <button disabled>Applied</button>
+                ) : (
+                    <Link to={`/jobs/${id}/apply`} state={{ from: `/jobs/${id}` }}>
+                        Apply
+                    </Link>
+                )
             ) : (
-                <Link to="/login" state={{ from: `/jobs/${id}` }}>Login to apply</Link>
+                <Link to="/login" state={{ from: `/jobs/${id}` }}>
+                    Login to apply
+                </Link>
             )}
 
             <Link to="/">Back</Link>

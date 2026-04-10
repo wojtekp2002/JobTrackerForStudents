@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
-import { Link,  useParams } from "react-router-dom";
+import { Link,  useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
 function ApplyPage({ isLoggedIn }) {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
@@ -37,14 +38,15 @@ function ApplyPage({ isLoggedIn }) {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await axios.post(`http://localhost:5000/api/jobs/${id}/apply`, formData, {
+            const response = await axios.post(`http://localhost:5000/api/applications/apply/${id}`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 setSuccessMessage("Application submitted successfully!");
+                navigate(`/jobs/${id}`);
             }
 
             setErrMessage("");
