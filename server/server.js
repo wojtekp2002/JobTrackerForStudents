@@ -25,6 +25,19 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 
+app.use((err, req, res, next) => {
+  if (err.message === "Only PDF files are allowed") {
+    return res.status(400).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(500).json({
+    message: "Server error",
+    error: err.message,
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

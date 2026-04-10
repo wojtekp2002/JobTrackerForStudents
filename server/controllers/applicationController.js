@@ -4,40 +4,60 @@ import Job from "../models/Job.js";
 export const applyToJob = async (req, res) => {
   try {
     if (req.user.role !== "student") {
-        return res.status(403).json({
-            message: "Only students can apply to jobs",
-        });
+      return res.status(403).json({
+        message: "Only students can apply to jobs",
+      });
     }
 
     const { jobId } = req.params;
-    
-    const job = await Job.findById(jobId);
-    
-    if (!job) {
-        return res.status(404).json({
-            message: "Job not found",
-        });
-    }
-    
-    const existingApplication = await Application.findOne({
-        student: req.user._id,
-        job: jobId,
-    });
-    
-    if (existingApplication) {
+    const { name, surname, email, phone, currLocation, coverLetter } = req.body;
+
+    if (!name || !surname || !email) {
         return res.status(400).json({
-            message: "Application already exists",
+            message: "Name, surname and email are required",
         });
     }
-    
+
+    if (!req.file) {
+      return res.status(400).json({
+        message: "CV file is required",
+      });
+    }
+
+    const job = await Job.findById(jobId);
+
+    if (!job) {
+      return res.status(404).json({
+        message: "Job not found",
+      });
+    }
+
+    const existingApplication = await Application.findOne({
+      student: req.user._id,
+      job: jobId,
+    });
+
+    if (existingApplication) {
+      return res.status(400).json({
+        message: "Application already exists",
+      });
+    }
+
     const application = await Application.create({
-        student: req.user._id,
-        job: jobId,
-    })
-    
+      name,
+      surname,
+      email,
+      phone,
+      currLocation,
+      coverLetter,
+      cvFilePath: req.file.path,
+      student: req.user._id,
+      job: jobId,
+    });
+
     return res.status(201).json({
-        message: "Application created successfully",
-        application,
+      message: "Application created successfully",
+      application,
     });
   } catch (error) {
     return res.status(500).json({
@@ -124,7 +144,7 @@ export const updateApplicationStatus = async (req, res) => {
     const { applicationId } = req.params;
     const { status } = req.body;
 
-    if (!["interview", "accepted", "rejected"].includes(status)) {
+    if (!["interviewing", "accepted", "rejected"].includes(status)) {
         return res.status(400).json({
             message: "Invalid status value",
         });
