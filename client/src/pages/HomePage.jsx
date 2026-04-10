@@ -33,27 +33,71 @@ function HomePage({ isLoggedIn, onLogout }) {
 
     return (
         <div>
-            <h1>Student Jobs App</h1>
-            <h2>Job Offers</h2>
-            {!isLoggedIn ? <Link to="/login">Login</Link> : <button onClick={onLogout}>Logout</button>}
-            {isLoggedIn && <Link state={{from: "/"}} to="/my-applications">My Applications</Link>}
-            <input
-            type="text"
-            placeholder="Search jobs..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && setFilterValue(inputValue)}
-            />
-            <button onClick={() => setFilterValue(inputValue)}>Search</button>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "12px 24px",
+                    borderBottom: "1px solid #ccc",
+                }}
+            >
+                <h2 style={{ margin: 0 }}>StudentyWantWork</h2>
 
-            {isLoading ? (
-            <p>Loading...</p>
-            ) : filteredJobs.length === 0 ? (
-            <p>No job offers found.</p>
-            ) : (
-            <JobList jobs={filteredJobs} />
-            )}
+                <div style={{ display: "flex", alignItems: "center", gap: "12px"}}>
+                    {!isLoggedIn ? (
+                        <Link to="/login" style={{borderRadius: "25%"}}>Login</Link>
+                    ) : (
+                        <>
+                            <Link to="/my-applications" >My Applications</Link>
+                            <button onClick={onLogout} style={{cursor: "pointer"}}>Logout</button>
+                        </>
+                    )}
+                </div>
+            </div>
+
+            <div
+                style={{
+                    maxWidth: "900px",
+                    margin: "0 auto",
+                    padding: "24px 16px",
+                }}
+            >
+                <h1 style={{ marginBottom: "8px" }}>Job Offers</h1>
+                <p style={{ marginTop: 0 }}>Find internships, part-time jobs and junior roles.</p>
+
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "10px",
+                        marginTop: "20px",
+                        marginBottom: "24px",
+                    }}
+                >
+                    <input
+                        type="text"
+                        placeholder="Search jobs..."
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && setFilterValue(inputValue)}
+                        style={{
+                            flex: 1,
+                            padding: "10px",
+                        }}
+                    />
+                    <button onClick={() => setFilterValue(inputValue)}>Search</button>
+                </div>
+
+                {isLoading ? (
+                    <p>Loading...</p>
+                ) : filteredJobs.length === 0 ? (
+                    <p>No job offers found.</p>
+                ) : (
+                    <JobList jobs={filteredJobs} />
+                )}
+            </div>
         </div>
+
     );
 };
 

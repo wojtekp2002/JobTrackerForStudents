@@ -60,49 +60,198 @@ function JobDetailsPage({ isLoggedIn }) {
 
     return (
         <div>
-            <h1>Student Jobs App</h1>
-            {isLoggedIn && <Link state={{from: `/jobs/${id}`}} to="/my-applications">My Applications</Link>}
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "12px 24px",
+                    borderBottom: "1px solid #334155",
+                }}
+            >
+                <h2 style={{ margin: 0 }}>StudentyWantWork</h2>
 
-            <h2>{job.title}</h2>
-            <p><strong>Company:</strong> {job.companyName}</p>
-            <p><strong>Location:</strong> {job.location}</p>
-            <p><strong>Work mode:</strong> {job.workMode}</p>
-            <p><strong>Employment type:</strong> {job.employmentType}</p>
-            <p><strong>Salary:</strong> {job.salary || "Not specified"}</p>
-            <p><strong>Year of study:</strong> {job.minYear} - {job.maxYear}</p>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    {isLoggedIn && <Link to="/my-applications">My Applications</Link>}
+                    <Link to="/">Back to jobs</Link>
+                </div>
+            </div>
 
-            <p>
-                <strong>Fields of study:</strong>{" "}
-                {job.fieldsOfStudy && job.fieldsOfStudy.length > 0
-                    ? job.fieldsOfStudy.join(", ")
-                    : "Not specified"}
-            </p>
+            <div
+                style={{
+                    maxWidth: "900px",
+                    margin: "0 auto",
+                    padding: "32px 16px",
+                }}
+            >
+                <div
+                    style={{
+                        background: "rgba(30, 41, 59, 0.9)",
+                        border: "1px solid #334155",
+                        borderRadius: "24px",
+                        padding: "28px",
+                        boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
+                    }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                            gap: "16px",
+                            flexWrap: "wrap",
+                            marginBottom: "24px",
+                        }}
+                    >
+                        <div>
+                            <h1 style={{ fontSize: "36px", marginBottom: "10px" }}>{job.title}</h1>
+                            <p style={{ fontSize: "18px", color: "#cbd5e1" }}>{job.companyName}</p>
+                        </div>
 
-            <p>
-                <strong>Skills:</strong>{" "}
-                {job.skills && job.skills.length > 0
-                    ? job.skills.join(", ")
-                    : "Not specified"}
-            </p>
+                        <div
+                            style={{
+                                padding: "8px 14px",
+                                borderRadius: "999px",
+                                background: "rgba(139, 92, 246, 0.16)",
+                                border: "1px solid rgba(139, 92, 246, 0.35)",
+                                color: "#ddd6fe",
+                                fontSize: "14px",
+                                fontWeight: 600,
+                            }}
+                        >
+                            {job.employmentType}
+                        </div>
+                    </div>
 
-            <p><strong>Description:</strong></p>
-            <p>{job.description}</p>
+                    <div
+                        style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: "10px",
+                            marginBottom: "24px",
+                        }}
+                    >
+                        <span
+                            style={{
+                                padding: "7px 12px",
+                                borderRadius: "999px",
+                                background: "#0f172a",
+                                border: "1px solid #334155",
+                                color: "#cbd5e1",
+                                fontSize: "14px",
+                            }}
+                        >
+                            {job.location}
+                        </span>
 
-            {isLoggedIn ? (
-                isApplied ? (
-                    <button disabled>Applied</button>
-                ) : (
-                    <Link to={`/jobs/${id}/apply`} state={{ from: `/jobs/${id}` }}>
-                        Apply
-                    </Link>
-                )
-            ) : (
-                <Link to="/login" state={{ from: `/jobs/${id}` }}>
-                    Login to apply
-                </Link>
-            )}
+                        <span
+                            style={{
+                                padding: "7px 12px",
+                                borderRadius: "999px",
+                                background: "#0f172a",
+                                border: "1px solid #334155",
+                                color: "#cbd5e1",
+                                fontSize: "14px",
+                            }}
+                        >
+                            {job.workMode}
+                        </span>
 
-            <Link to="/">Back</Link>
+                        <span
+                            style={{
+                                padding: "7px 12px",
+                                borderRadius: "999px",
+                                background: "#0f172a",
+                                border: "1px solid #334155",
+                                color: "#cbd5e1",
+                                fontSize: "14px",
+                            }}
+                        >
+                            Year {job.minYear} - {job.maxYear}
+                        </span>
+
+                        <span
+                            style={{
+                                padding: "7px 12px",
+                                borderRadius: "999px",
+                                background: "#0f172a",
+                                border: "1px solid #334155",
+                                color: "#cbd5e1",
+                                fontSize: "14px",
+                            }}
+                        >
+                            {job.salary || "Salary not specified"}
+                        </span>
+                    </div>
+
+                    <div style={{ marginBottom: "24px" }}>
+                        <h3 style={{ marginBottom: "10px" }}>Fields of study</h3>
+                        <p>
+                            {job.fieldsOfStudy && job.fieldsOfStudy.length > 0
+                                ? job.fieldsOfStudy.join(", ")
+                                : "Not specified"}
+                        </p>
+                    </div>
+
+                    <div style={{ marginBottom: "24px" }}>
+                        <h3 style={{ marginBottom: "10px" }}>Skills</h3>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                            {job.skills && job.skills.length > 0 ? (
+                                job.skills.map((skill, index) => (
+                                    <span
+                                        key={index}
+                                        style={{
+                                            padding: "6px 10px",
+                                            borderRadius: "10px",
+                                            background: "rgba(255,255,255,0.04)",
+                                            border: "1px solid #334155",
+                                            color: "#cbd5e1",
+                                            fontSize: "13px",
+                                        }}
+                                    >
+                                        {skill}
+                                    </span>
+                                ))
+                            ) : (
+                                <p>Not specified</p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div style={{ marginBottom: "28px" }}>
+                        <h3 style={{ marginBottom: "10px" }}>Description</h3>
+                        <p style={{ lineHeight: 1.8 }}>{job.description}</p>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                        {isLoggedIn ? (
+                            isApplied ? (
+                                <button disabled>Applied</button>
+                            ) : (
+                                <Link to={`/jobs/${id}/apply`} style={{ textDecoration: "none" }}>
+                                    <button>Apply now</button>
+                                </Link>
+                            )
+                        ) : (
+                            <Link to="/login" state={{ from: `/jobs/${id}` }} style={{ textDecoration: "none" }}>
+                                <button>Login to apply</button>
+                            </Link>
+                        )}
+
+                        <Link to="/" style={{ textDecoration: "none" }}>
+                            <button
+                                style={{
+                                    background: "transparent",
+                                    border: "1px solid #334155",
+                                    color: "#e5e7eb",
+                                }}
+                            >
+                                Back
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
