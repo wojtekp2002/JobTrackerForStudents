@@ -16,6 +16,7 @@ function ApplyPage({ isLoggedIn }) {
     const [coverLetter, setCoverLetter] = useState("");
     const [errMessage, setErrMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,6 +26,8 @@ function ApplyPage({ isLoggedIn }) {
             setSuccessMessage("");
             return;
         }
+
+        setIsSubmitting(true);
 
         const formData = new FormData();
         formData.append("name", name);
@@ -61,9 +64,15 @@ function ApplyPage({ isLoggedIn }) {
         } catch (error) {
             console.error("Error occurred while submitting application:", error);
             setSuccessMessage("");
-            setErrMessage("An error occurred while submitting your application. Please try again.");
-        }
 
+            if (error.response && error.response.data && error.response.data.message) {
+                setErrMessage(error.response.data.message);
+            } else {
+                setErrMessage("An error occurred while submitting your application. Please try again.");
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -96,14 +105,32 @@ function ApplyPage({ isLoggedIn }) {
                     </label>
                     <label>
                         CV File:
-                        <input type="file" name="cvFile" onChange={(e) => setCvFile(e.target.files[0])} />
+                        <input
+                            type="file"
+                            name="cvFile"
+                            accept=".pdf,application/pdf"
+                            onChange={(e) => {
+                                const file = e.target.files[0];
+
+                                if (file && file.type !== "application/pdf") {
+                                    setErrMessage("Only PDF files are allowed.");
+                                    setCvFile(null);
+                                    return;
+                                }
+
+                                setErrMessage("");
+                                setCvFile(file);
+                            }}
+                        />
                     </label>
                     <label >
                         Cover Letter:
                         <textarea name="coverLetter" value={coverLetter} onChange={(e) => setCoverLetter(e.target.value)}></textarea>
                     </label>
 
-                    <button type="submit">Submit</button>
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Submit"}
+                    </button>
                 </form>
 
                 {errMessage && <p>{errMessage}</p>}

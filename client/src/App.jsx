@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
 import ApplyPage from "./pages/ApplyPage";
+import MyApplicationsPage from "./pages/MyApplicationPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,6 +29,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/jobs/:id" element={<JobDetailsPage isLoggedIn={isLoggedIn}/>} />
         <Route path="/jobs/:id/apply" element={<ApplyPage isLoggedIn={isLoggedIn}/>} />
+        <Route path="/my-applications" element={<MyApplicationsPage />} />
       </Routes>
   );
 }

@@ -61,14 +61,32 @@ function JobDetailsPage({ isLoggedIn }) {
     return (
         <div>
             <h1>Student Jobs App</h1>
+            {isLoggedIn && <Link state={{from: `/jobs/${id}`}} to="/my-applications">My Applications</Link>}
 
             <h2>{job.title}</h2>
-            <p>{job.companyName}</p>
+            <p><strong>Company:</strong> {job.companyName}</p>
+            <p><strong>Location:</strong> {job.location}</p>
+            <p><strong>Work mode:</strong> {job.workMode}</p>
+            <p><strong>Employment type:</strong> {job.employmentType}</p>
+            <p><strong>Salary:</strong> {job.salary || "Not specified"}</p>
+            <p><strong>Year of study:</strong> {job.minYear} - {job.maxYear}</p>
+
+            <p>
+                <strong>Fields of study:</strong>{" "}
+                {job.fieldsOfStudy && job.fieldsOfStudy.length > 0
+                    ? job.fieldsOfStudy.join(", ")
+                    : "Not specified"}
+            </p>
+
+            <p>
+                <strong>Skills:</strong>{" "}
+                {job.skills && job.skills.length > 0
+                    ? job.skills.join(", ")
+                    : "Not specified"}
+            </p>
+
+            <p><strong>Description:</strong></p>
             <p>{job.description}</p>
-            <p>{job.location}</p>
-            <p>{job.workMode}</p>
-            <p>{job.employmentType}</p>
-            <p>{job.salary}</p>
 
             {isLoggedIn ? (
                 isApplied ? (

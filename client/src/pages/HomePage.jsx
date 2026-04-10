@@ -36,6 +36,7 @@ function HomePage({ isLoggedIn, onLogout }) {
             <h1>Student Jobs App</h1>
             <h2>Job Offers</h2>
             {!isLoggedIn ? <Link to="/login">Login</Link> : <button onClick={onLogout}>Logout</button>}
+            {isLoggedIn && <Link state={{from: "/"}} to="/my-applications">My Applications</Link>}
             <input
             type="text"
             placeholder="Search jobs..."
