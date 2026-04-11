@@ -44,96 +44,98 @@ function MyApplicationsPage() {
     }
 
     return (
-    <div>
-        <Navbar isLoggedIn={true} />
+        <div>
+            <Navbar isLoggedIn={true} />
 
-        <div
-            style={{
-                maxWidth: "900px",
-                margin: "0 auto",
-                padding: "32px 16px",
-            }}
-        >
-            <h1 style={{ marginBottom: "24px" }}>My Applications</h1>
+            <div
+                style={{
+                    maxWidth: "900px",
+                    margin: "0 auto",
+                    padding: "32px 16px",
+                }}
+            >
+                <h1 style={{ marginBottom: "24px" }}>My Applications</h1>
 
-            {applications.length === 0 ? (
-                <p>You have not applied to any jobs yet.</p>
-            ) : (
-                <div
-                    style={{
-                        display: "grid",
-                        gap: "18px",
-                    }}
-                >
-                    {applications.map((application) => (
-                        <div
-                            key={application._id}
-                            style={{
-                                background: "rgba(30, 41, 59, 0.9)",
-                                border: "1px solid #334155",
-                                borderRadius: "20px",
-                                padding: "20px",
-                                boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
-                            }}
-                        >
-                            <h3 style={{ marginBottom: "8px" }}>
-                                {application.job?.title}
-                            </h3>
-
-                            <p style={{ color: "#cbd5e1", marginBottom: "10px" }}>
-                                {application.job?.companyName}
-                            </p>
-
+                {applications.length === 0 ? (
+                    <p>You have not applied to any jobs yet.</p>
+                ) : (
+                    <div
+                        style={{
+                            display: "grid",
+                            gap: "18px",
+                        }}
+                    >
+                        {applications.map((application) => (
                             <div
+                                key={application._id}
                                 style={{
-                                    display: "flex",
-                                    gap: "10px",
-                                    flexWrap: "wrap",
-                                    marginBottom: "12px",
+                                    background: "rgba(30, 41, 59, 0.9)",
+                                    border: "1px solid #334155",
+                                    borderRadius: "20px",
+                                    padding: "20px",
+                                    boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
                                 }}
                             >
-                                <span
-                                    style={{
-                                        padding: "6px 10px",
-                                        borderRadius: "999px",
-                                        background: "#0f172a",
-                                        border: "1px solid #334155",
-                                        fontSize: "13px",
-                                    }}
-                                >
-                                    Status: {application.status}
-                                </span>
+                                <h3 style={{ marginBottom: "8px" }}>
+                                    {application.job?.title}
+                                </h3>
 
-                                <span
+                                <p style={{ color: "#cbd5e1", marginBottom: "10px" }}>
+                                    {application.job?.companyName}
+                                </p>
+
+                                <div
                                     style={{
-                                        padding: "6px 10px",
-                                        borderRadius: "999px",
-                                        background: "#0f172a",
-                                        border: "1px solid #334155",
-                                        fontSize: "13px",
+                                        display: "flex",
+                                        gap: "10px",
+                                        flexWrap: "wrap",
+                                        marginBottom: "12px",
                                     }}
                                 >
-                                    Applied:{" "}
-                                    {new Date(application.createdAt).toLocaleDateString()}
-                                </span>
+                                    <span
+                                        style={{
+                                            padding: "6px 10px",
+                                            borderRadius: "999px",
+                                            background: "#0f172a",
+                                            border: "1px solid #334155",
+                                            fontSize: "13px",
+                                        }}
+                                    >
+                                        Status: {application.status}
+                                    </span>
+
+                                    <span
+                                        style={{
+                                            padding: "6px 10px",
+                                            borderRadius: "999px",
+                                            background: "#0f172a",
+                                            border: "1px solid #334155",
+                                            fontSize: "13px",
+                                        }}
+                                    >
+                                        Applied:{" "}
+                                        {new Date(application.createdAt).toLocaleDateString()}
+                                    </span>
+                                </div>
+
+                                <Link
+                                    to={`/jobs/${application.job?._id}`}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "#c4b5fd",
+                                    }}
+                                >
+                                    View job →
+                                </Link>
                             </div>
-
-                            <Link
-                                to={`/jobs/${application.job?._id}`}
-                                style={{
-                                    textDecoration: "none",
-                                    color: "#c4b5fd",
-                                }}
-                            >
-                                View job →
-                            </Link>
-                        </div>
-                    ))}
-                </div>
-            )}
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
 }
+
+
 
 export default MyApplicationsPage;
