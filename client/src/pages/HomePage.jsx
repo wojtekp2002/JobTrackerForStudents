@@ -9,6 +9,7 @@ function HomePage({ isLoggedIn, onLogout }) {
     const [inputValue, setInputValue] = useState("");
     const [filterValue, setFilterValue] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [activeFilter, setActiveFilter] = useState("all");
     
 
     useEffect(() => {
@@ -25,12 +26,21 @@ function HomePage({ isLoggedIn, onLogout }) {
     }, []);
 
     const term = filterValue.toLowerCase().trim();
-    const filteredJobs = jobs.filter(job =>
-        job.title.toLowerCase().includes(term) ||
-        job.companyName.toLowerCase().includes(term) ||
-        job.description.toLowerCase().includes(term) ||
-        job.location.toLowerCase().includes(term)
-    );
+
+    const filteredJobs = jobs.filter((job) => {
+        const matchesSearch =
+            job.title.toLowerCase().includes(term) ||
+            job.companyName.toLowerCase().includes(term) ||
+            job.description.toLowerCase().includes(term) ||
+            job.location.toLowerCase().includes(term);
+
+        const matchesQuickFilter =
+            activeFilter === "all" ||
+            job.workMode === activeFilter ||
+            job.employmentType === activeFilter;
+
+        return matchesSearch && matchesQuickFilter;
+    });
 
     return (
         <div>
@@ -168,6 +178,30 @@ function HomePage({ isLoggedIn, onLogout }) {
                         >
                             Search jobs
                         </button>
+
+                        <div
+                            style={{
+                                display: "flex",
+                                gap: "10px",
+                                flexWrap: "wrap",
+                                marginTop: "18px",
+                            }}
+                        >
+                            {["all", "remote", "hybrid", "onsite", "internship", "part-time", "junior"].map((filter) => (
+                                <button
+                                    key={filter}
+                                    onClick={() => setActiveFilter(filter)}
+                                    style={{
+                                        background: activeFilter === filter ? "#8b5cf6" : "transparent",
+                                        color: "#ffffff",
+                                        border: "1px solid #334155",
+                                    }}
+                                >
+                                    {filter}
+                                </button>
+                            ))}
+                        </div>
+
                     </div>
                 </section>
 
