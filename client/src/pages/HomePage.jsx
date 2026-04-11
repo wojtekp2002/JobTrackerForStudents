@@ -10,7 +10,7 @@ function HomePage({ isLoggedIn, onLogout }) {
     const [filterValue, setFilterValue] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [activeFilter, setActiveFilter] = useState("all");
-    
+    const [sortBy, setSortBy] = useState("newest");
 
     useEffect(() => {
         setIsLoading(true);
@@ -40,6 +40,18 @@ function HomePage({ isLoggedIn, onLogout }) {
             job.employmentType === activeFilter;
 
         return matchesSearch && matchesQuickFilter;
+    });
+
+    const sortedJobs = [...filteredJobs].sort((a, b) => {
+        if (sortBy === "title-asc") {
+            return a.title.localeCompare(b.title);
+        }
+
+        if (sortBy === "title-desc") {
+            return b.title.localeCompare(a.title);
+        }
+
+        return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
     return (
@@ -85,7 +97,7 @@ function HomePage({ isLoggedIn, onLogout }) {
                             maxWidth: "700px",
                         }}
                     >
-                        Find student jobs that actually fit your skills and studies.
+                        Find student jobs that actually fit your skills and studies
                     </h1>
 
                     <p
@@ -224,6 +236,19 @@ function HomePage({ isLoggedIn, onLogout }) {
                         </p>
                     </div>
 
+                    <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            style={{
+                                width: "auto",
+                                minWidth: "180px",
+                            }}
+                        >
+                            <option value="newest">Newest</option>
+                            <option value="title-asc">Title A-Z</option>
+                            <option value="title-desc">Title Z-A</option>
+                    </select>
+
                     <div
                         style={{
                             padding: "8px 12px",
@@ -234,7 +259,7 @@ function HomePage({ isLoggedIn, onLogout }) {
                             fontSize: "14px",
                         }}
                     >
-                        {filteredJobs.length} offer{filteredJobs.length === 1 ? "" : "s"}
+                        {sortedJobs.length} offer{sortedJobs.length === 1 ? "" : "s"}
                     </div>
                 </div>
 
@@ -253,7 +278,7 @@ function HomePage({ isLoggedIn, onLogout }) {
                         <p>Try a different keyword or clear your search.</p>
                     </div>
                 ) : (
-                    <JobList jobs={filteredJobs} />
+                    <JobList jobs={sortedJobs} />
                 )}
             </div>
         </div>
