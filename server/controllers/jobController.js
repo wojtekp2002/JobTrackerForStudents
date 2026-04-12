@@ -36,6 +36,12 @@ export const createJob = async (req, res) => {
       });
     }
 
+    if (minYear > maxYear) {
+      return res.status(400).json({
+        message: "Minimum year cannot be greater than maximum year",
+      });
+    }
+
     const employerProfile = await EmployerProfile.findOne({ user: req.user._id });
 
     if (!employerProfile) {
