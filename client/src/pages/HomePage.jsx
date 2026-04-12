@@ -4,7 +4,7 @@ import JobList from "../components/JobList";
 import Navbar from "../components/Navbar";
 import "./HomePage.css";
 
-function HomePage({ isLoggedIn, onLogout }) {
+function HomePage({ isLoggedIn, onLogout, role}) {
     const [jobs, setJobs] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [filterValue, setFilterValue] = useState("");
@@ -56,7 +56,7 @@ function HomePage({ isLoggedIn, onLogout }) {
 
     return (
         <div>
-            <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} />
+            <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} role={role} />
 
             <div className="homepage-container" >
                 <section className="homepage-hero" >

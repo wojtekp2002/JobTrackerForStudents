@@ -12,6 +12,7 @@ export const createJob = async (req, res) => {
     const {
       title,
       description,
+      companyName,
       location,
       workMode,
       employmentType,
@@ -24,7 +25,8 @@ export const createJob = async (req, res) => {
 
     if (
       !title ||
-      !description ||
+      !description || 
+      !companyName ||
       !location ||
       !workMode ||
       !employmentType ||

@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-function Navbar({ isLoggedIn, onLogout }) {
+function Navbar({ isLoggedIn, onLogout, role }) {
     const navButtonStyle = {
         display: "inline-flex",
         alignItems: "center",
@@ -45,17 +47,27 @@ function Navbar({ isLoggedIn, onLogout }) {
             </Link>
 
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                {isLoggedIn ? (
-                    <>
-                        <Link to="/my-applications" style={navButtonStyle}>
-                            My Applications
-                        </Link>
-                        <button onClick={onLogout}>Logout</button>
-                    </>
+                {isLoggedIn ? ( 
+                    role === "student" ? 
+                        (
+                        <>
+                            <Link to="/my-applications" style={navButtonStyle}>
+                                My Applications
+                            </Link>
+                            <button onClick={onLogout}>Logout</button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/add-job" style={primaryLinkStyle}>
+                                Add Job
+                            </Link>
+                            <button onClick={onLogout}>Logout</button>
+                        </>
+                    )
                 ) : (
-                    <Link to="/login" style={primaryLinkStyle}>
-                        Login
-                    </Link>
+                        <Link to="/login" style={primaryLinkStyle}>
+                            Login
+                        </Link>
                 )}
             </div>
         </div>
@@ -65,6 +77,7 @@ function Navbar({ isLoggedIn, onLogout }) {
 Navbar.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     onLogout: PropTypes.func,
+    role: PropTypes.string,
 };
 
 export default Navbar;
