@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import JobList from "../components/JobList";
 import Navbar from "../components/Navbar";
+import "./HomePage.css";
 
 function HomePage({ isLoggedIn, onLogout }) {
     const [jobs, setJobs] = useState([]);
@@ -58,57 +58,17 @@ function HomePage({ isLoggedIn, onLogout }) {
         <div>
             <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} />
 
-            <div
-                style={{
-                    maxWidth: "1100px",
-                    margin: "0 auto",
-                    padding: "32px 16px 48px",
-                }}
-            >
-                <section
-                    style={{
-                        background:
-                            "radial-gradient(circle at top left, rgba(139, 92, 246, 0.22), transparent 35%), rgba(30, 41, 59, 0.92)",
-                        border: "1px solid #334155",
-                        borderRadius: "28px",
-                        padding: "36px",
-                        boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
-                        marginBottom: "28px",
-                    }}
-                >
-                    <p
-                        style={{
-                            color: "#c4b5fd",
-                            fontSize: "14px",
-                            fontWeight: 700,
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            marginBottom: "12px",
-                        }}
-                    >
+            <div className="homepage-container" >
+                <section className="homepage-hero" >
+                    <p className="homepage-hero-label">
                         Student careers platform
                     </p>
 
-                    <h1
-                        style={{
-                            fontSize: "52px",
-                            lineHeight: 1.05,
-                            marginBottom: "14px",
-                            maxWidth: "700px",
-                        }}
-                    >
+                    <h1 className="homepage-hero-title">
                         Find student jobs that actually fit your skills and studies
                     </h1>
 
-                    <p
-                        style={{
-                            fontSize: "18px",
-                            color: "#cbd5e1",
-                            maxWidth: "720px",
-                            lineHeight: 1.7,
-                            marginBottom: "28px",
-                        }}
-                    >
+                    <p className="homepage-hero-text">
                         Browse internships, part-time roles and junior opportunities.
                         Search by title, company, description or location and apply in a few clicks.
                     </p>
@@ -161,72 +121,42 @@ function HomePage({ isLoggedIn, onLogout }) {
                         </div>
                     </div>
 
-                    <div
-                        style={{
-                            display: "flex",
-                            gap: "12px",
-                            flexWrap: "wrap",
-                        }}
-                    >
+                    <div className="homepage-search-row">
                         <input
+                            className="homepage-search-input"
                             type="text"
                             placeholder="Search jobs by title, company or location..."
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && setFilterValue(inputValue)}
-                            style={{
-                                flex: 1,
-                                minWidth: "260px",
-                                padding: "14px 16px",
-                                fontSize: "16px",
-                            }}
                         />
                         <button
+                            className="homepage-search-button"
                             onClick={() => setFilterValue(inputValue)}
-                            style={{
-                                minWidth: "140px",
-                                fontWeight: 600,
-                            }}
                         >
                             Search jobs
                         </button>
-
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: "10px",
-                                flexWrap: "wrap",
-                                marginTop: "18px",
-                            }}
-                        >
-                            {["all", "remote", "hybrid", "onsite", "internship", "part-time", "junior"].map((filter) => (
-                                <button
-                                    key={filter}
-                                    onClick={() => setActiveFilter(filter)}
-                                    style={{
-                                        background: activeFilter === filter ? "#8b5cf6" : "transparent",
-                                        color: "#ffffff",
-                                        border: "1px solid #334155",
-                                    }}
-                                >
-                                    {filter}
-                                </button>
-                            ))}
-                        </div>
-
                     </div>
+
+                    <div className="homepage-filters">
+                        {["all", "remote", "hybrid", "onsite", "internship", "part-time", "junior"].map((filter) => (
+                            <button
+                                key={filter}
+                                onClick={() => setActiveFilter(filter)}
+                                style={{
+                                    background: activeFilter === filter ? "#8b5cf6" : "transparent",
+                                    color: "#ffffff",
+                                    border: "1px solid #334155",
+                                }}
+                            >
+                                {filter}
+                            </button>
+                        ))}
+                    </div>
+
                 </section>
 
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        gap: "12px",
-                        marginBottom: "20px",
-                        flexWrap: "wrap",
-                    }}
-                >
+                <div className="homepage-results-bar">
                     <div>
                         <h2 style={{ marginBottom: "6px" }}>Latest opportunities</h2>
                         <p>
@@ -249,31 +179,15 @@ function HomePage({ isLoggedIn, onLogout }) {
                             <option value="title-desc">Title Z-A</option>
                     </select>
 
-                    <div
-                        style={{
-                            padding: "8px 12px",
-                            borderRadius: "999px",
-                            background: "rgba(255,255,255,0.04)",
-                            border: "1px solid #334155",
-                            color: "#cbd5e1",
-                            fontSize: "14px",
-                        }}
-                    >
+                    <div className="homepage-results-count" >
                         {sortedJobs.length} offer{sortedJobs.length === 1 ? "" : "s"}
                     </div>
                 </div>
 
                 {isLoading ? (
                     <p>Loading...</p>
-                ) : filteredJobs.length === 0 ? (
-                    <div
-                        style={{
-                            background: "rgba(30, 41, 59, 0.9)",
-                            border: "1px solid #334155",
-                            borderRadius: "20px",
-                            padding: "24px",
-                        }}
-                    >
+                ) : sortedJobs.length === 0 ? (
+                    <div className="homepage-empty-state">
                         <h3 style={{ marginBottom: "10px" }}>No job offers found</h3>
                         <p>Try a different keyword or clear your search.</p>
                     </div>

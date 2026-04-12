@@ -1,17 +1,10 @@
 import PropTypes from "prop-types";
 import JobItem from "./JobItem";
+import "./JobList.css";
 
 function JobList({ jobs }) {
     return (
-        <ul
-            style={{
-                listStyle: "none",
-                padding: 0,
-                margin: 0,
-                display: "grid",
-                gap: "18px",
-            }}
-        >
+        <ul className="job-list">
             {jobs.map((job) => (
                 <JobItem key={job._id} job={job} />
             ))}
