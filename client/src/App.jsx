@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import axios from "axios";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -11,48 +11,86 @@ import AddJobPage from "./pages/AddJobPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-  };
-
   const [role, setRole] = useState(null);
 
   useEffect(() => {
-      axios.get(
-        "/api/auth/me", 
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-        }
-      )
-        .then((response) => {
-            setRole(response.data.role);
-        })
-          .catch((error) => {
-              console.error("Error fetching user role:", error);
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setRole("guest");
+      return;
+    }
+
+    axios
+      .get("http://localhost:5000/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setRole(response.data.user.role);
+      })
+      .catch((error) => {
+        console.error("Error fetching user role:", error);
+        setRole("error"); 
       });
-    }, []);
+  }, [isLoggedIn]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setRole(null);
+    setIsLoggedIn(false);
+  };
+
+  console.log("ROLE:", role);
+  console.log("IS LOGGED:", isLoggedIn);
 
   return (
-      <Routes>
-        <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} role={role} />} />
-        <Route path="/login" element={<LoginPage onLoginSuccess={() => setIsLoggedIn(true)} />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/jobs/:id" element={<JobDetailsPage isLoggedIn={isLoggedIn} onLogout={handleLogout} role={role} />} />
-        <Route path="/jobs/:id/apply" element={<ApplyPage isLoggedIn={isLoggedIn} role={role} />} />
-        <Route path="/my-applications" element={<MyApplicationsPage />} />
-        <Route path="/add-job" element={<AddJobPage isLoggedIn={isLoggedIn} role={role} />} />
-      </Routes>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <HomePage
+            isLoggedIn={isLoggedIn}
+            onLogout={handleLogout}
+            role={role}
+          />
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <LoginPage
+            onLoginSuccess={() => setIsLoggedIn(true)}
+          />
+        }
+      />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route
+        path="/jobs/:id"
+        element={
+          <JobDetailsPage
+            isLoggedIn={isLoggedIn}
+            onLogout={handleLogout}
+            role={role}
+          />
+        }
+      />
+      <Route
+        path="/jobs/:id/apply"
+        element={<ApplyPage isLoggedIn={isLoggedIn} role={role} />}
+      />
+      <Route path="/my-applications" element={<MyApplicationsPage />} />
+      <Route
+        path="/add-job"
+        element={<AddJobPage isLoggedIn={isLoggedIn} role={role} />}
+      />
+    </Routes>
   );
 }
 

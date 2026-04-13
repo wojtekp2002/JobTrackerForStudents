@@ -108,3 +108,11 @@ export const employerOnlyRoute = async (req, res) => {
     message: "Employer, you have access",
   });
 };
+
+export const getMe = (req, res) => {
+  return res.status(200).json({
+    _id: req.user._id,
+    email: req.user.email,
+    role: req.user.role,
+  });
+};

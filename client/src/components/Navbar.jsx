@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
 
 function Navbar({ isLoggedIn, onLogout, role }) {
     const navButtonStyle = {
@@ -47,27 +45,26 @@ function Navbar({ isLoggedIn, onLogout, role }) {
             </Link>
 
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                {isLoggedIn ? ( 
-                    role === "student" ? 
-                        (
-                        <>
-                            <Link to="/my-applications" style={navButtonStyle}>
-                                My Applications
-                            </Link>
-                            <button onClick={onLogout}>Logout</button>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/add-job" style={primaryLinkStyle}>
-                                Add Job
-                            </Link>
-                            <button onClick={onLogout}>Logout</button>
-                        </>
-                    )
-                ) : (
-                        <Link to="/login" style={primaryLinkStyle}>
-                            Login
+                {role === "guest" ? (
+                    <Link to="/login" style={primaryLinkStyle}>
+                        Login
+                    </Link>
+                ) : role === "student" ? (
+                    <>
+                        <Link to="/my-applications" style={navButtonStyle}>
+                            My Applications
                         </Link>
+                        <button onClick={onLogout}>Logout</button>
+                    </>
+                ) : role === "employer" ? (
+                    <>
+                        <Link to="/add-job" style={primaryLinkStyle}>
+                            Add Job
+                        </Link>
+                        <button onClick={onLogout}>Logout</button>
+                    </>
+                ) : (
+                    <button disabled>Loading...</button>
                 )}
             </div>
         </div>

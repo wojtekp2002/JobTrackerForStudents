@@ -76,13 +76,17 @@ function AddJobPage({ isLoggedIn, role }) {
         }
     };
 
-    if (!isLoggedIn) {
+    if (role === "guest") {
         return (
             <div>
                 <h1>Please log in first.</h1>
                 <Link to="/login">Login</Link>
             </div>
         );
+    }
+
+    if (role === null) {
+        return <p>Loading...</p>;
     }
 
     if (role !== "employer") {
