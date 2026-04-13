@@ -1,70 +1,39 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { BriefcaseBusiness } from "lucide-react";
+import "./Navbar.css";
 
 function Navbar({ isLoggedIn, onLogout, role }) {
-    const navButtonStyle = {
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "10px 16px",
-        borderRadius: "10px",
-        textDecoration: "none",
-        border: "1px solid #334155",
-        color: "#e5e7eb",
-        background: "transparent",
-        fontSize: "15px",
-        fontWeight: 500,
-        transition: "0.2s ease",
-    };
-
-    const primaryLinkStyle = {
-        ...navButtonStyle,
-        background: "#8b5cf6",
-        border: "1px solid #8b5cf6",
-        color: "#ffffff",
-    };
-
     return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "12px 24px",
-                borderBottom: "1px solid #334155",
-            }}
-        >
-            <Link
-                to="/"
-                style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                }}
-            >
-                <h2 style={{ margin: 0 }}>StudentyWantWork</h2>
+        <div className="navbar">
+            <Link to="/" className="navbar-brand">
+                <div className="navbar-logo">
+                    <BriefcaseBusiness size={16} color="white" />
+                </div>
+                <span className="navbar-title">StudentyWantWork</span>
             </Link>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                {role === "guest" ? (
-                    <Link to="/login" style={primaryLinkStyle}>
+            <div className="navbar-actions">
+                {!isLoggedIn ? (
+                    <Link to="/login" className="navbar-link-button navbar-link-button--primary">
                         Login
                     </Link>
-                ) : role === "student" ? (
-                    <>
-                        <Link to="/my-applications" style={navButtonStyle}>
-                            My Applications
-                        </Link>
-                        <button onClick={onLogout}>Logout</button>
-                    </>
-                ) : role === "employer" ? (
-                    <>
-                        <Link to="/add-job" style={primaryLinkStyle}>
-                            Add Job
-                        </Link>
-                        <button onClick={onLogout}>Logout</button>
-                    </>
                 ) : (
-                    <button disabled>Loading...</button>
+                    <>
+                        {role === "student" && (
+                            <Link to="/my-applications" className="navbar-link-button">
+                                My Applications
+                            </Link>
+                        )}
+
+                        {role === "employer" && (
+                            <Link to="/add-job" className="navbar-link-button navbar-link-button--primary">
+                                Add Job
+                            </Link>
+                        )}
+
+                        <button onClick={onLogout}>Logout</button>
+                    </>
                 )}
             </div>
         </div>

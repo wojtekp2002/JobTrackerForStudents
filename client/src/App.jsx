@@ -47,9 +47,6 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  console.log("ROLE:", role);
-  console.log("IS LOGGED:", isLoggedIn);
-
   return (
     <Routes>
       <Route

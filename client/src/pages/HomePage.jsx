@@ -3,6 +3,7 @@ import axios from "axios";
 import JobList from "../components/JobList";
 import Navbar from "../components/Navbar";
 import "./HomePage.css";
+import { Search } from "lucide-react";
 
 function HomePage({ isLoggedIn, onLogout, role}) {
     const [jobs, setJobs] = useState([]);
@@ -73,50 +74,16 @@ function HomePage({ isLoggedIn, onLogout, role}) {
                         Search by title, company, description or location and apply in a few clicks.
                     </p>
 
-                    <div
-                        style={{
-                            display: "flex",
-                            gap: "12px",
-                            flexWrap: "wrap",
-                            marginBottom: "28px",
-                        }}
-                    >
-                        <div
-                            style={{
-                                padding: "8px 14px",
-                                borderRadius: "999px",
-                                background: "rgba(255,255,255,0.05)",
-                                border: "1px solid #334155",
-                                color: "#cbd5e1",
-                                fontSize: "14px",
-                            }}
-                        >
+                    <div className="homepage-hero-chips">
+                        <div className="homepage-hero-chip">
                             Internships
                         </div>
 
-                        <div
-                            style={{
-                                padding: "8px 14px",
-                                borderRadius: "999px",
-                                background: "rgba(255,255,255,0.05)",
-                                border: "1px solid #334155",
-                                color: "#cbd5e1",
-                                fontSize: "14px",
-                            }}
-                        >
+                        <div className="homepage-hero-chip">
                             Part-time jobs
                         </div>
 
-                        <div
-                            style={{
-                                padding: "8px 14px",
-                                borderRadius: "999px",
-                                background: "rgba(255,255,255,0.05)",
-                                border: "1px solid #334155",
-                                color: "#cbd5e1",
-                                fontSize: "14px",
-                            }}
-                        >
+                        <div className="homepage-hero-chip">
                             Junior roles
                         </div>
                     </div>
@@ -131,25 +98,26 @@ function HomePage({ isLoggedIn, onLogout, role}) {
                             onKeyDown={(e) => e.key === "Enter" && setFilterValue(inputValue)}
                         />
                         <button
-                            className="homepage-search-button"
+                            className="homepage-search-button homepage-search-icon-button"
                             onClick={() => setFilterValue(inputValue)}
+                            aria-label="Search jobs"
                         >
-                            Search jobs
+                            <Search size={16} />
                         </button>
                     </div>
 
-                    <div className="homepage-filters">
-                        {["all", "remote", "hybrid", "onsite", "internship", "part-time", "junior"].map((filter) => (
+                    <div className="homepage-filters" >
+                        {["all", "remote", "hybrid", "onsite", "internship", "part-time", "junior"].map((filterName) => (
                             <button
-                                key={filter}
-                                onClick={() => setActiveFilter(filter)}
-                                style={{
-                                    background: activeFilter === filter ? "#8b5cf6" : "transparent",
-                                    color: "#ffffff",
-                                    border: "1px solid #334155",
-                                }}
+                                key={filterName}
+                                onClick={() => setActiveFilter(filterName)}
+                                className={
+                                    activeFilter === filterName
+                                        ? "homepage-filter-button homepage-filter-button--active"
+                                        : "homepage-filter-button"
+                                }
                             >
-                                {filter}
+                                {filterName}
                             </button>
                         ))}
                     </div>
@@ -157,8 +125,8 @@ function HomePage({ isLoggedIn, onLogout, role}) {
                 </section>
 
                 <div className="homepage-results-bar">
-                    <div>
-                        <h2 style={{ marginBottom: "6px" }}>Latest opportunities</h2>
+                    <div className="homepage-results-info">
+                        <h2>Latest opportunities</h2>
                         <p>
                             {filterValue
                                 ? `Showing results for "${filterValue}"`
@@ -166,21 +134,20 @@ function HomePage({ isLoggedIn, onLogout, role}) {
                         </p>
                     </div>
 
-                    <select
+                    <div className="homepage-results-actions">
+                        <select
+                            className="homepage-sort-select"
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
-                            style={{
-                                width: "auto",
-                                minWidth: "180px",
-                            }}
                         >
                             <option value="newest">Newest</option>
                             <option value="title-asc">Title A-Z</option>
                             <option value="title-desc">Title Z-A</option>
-                    </select>
+                        </select>
 
-                    <div className="homepage-results-count" >
-                        {sortedJobs.length} offer{sortedJobs.length === 1 ? "" : "s"}
+                        <div className="homepage-results-count">
+                            {sortedJobs.length} offer{sortedJobs.length === 1 ? "" : "s"}
+                        </div>
                     </div>
                 </div>
 
